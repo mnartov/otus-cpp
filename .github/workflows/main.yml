@@ -11,14 +11,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Set variables
+        id: variables
+        run: |
+          branch_cut_name=$(echo ${{ github.ref_name }} | sed 's/.*/')
+          echo "Project name will be set by cut name of current branch $branch_cut_name"
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Variables
-        id: variables
-        run: |
-          branch_cut_name=$(echo ${{ github.ref_name }} | sed 's/.*://')
-          echo "Project name will be set by cut name of current branch $branch_cut_name"
       - run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
       - run: cmake . -DPROJECT_NAME=${{ steps.variables.outputs.branch_cut_name }} -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=ON
       - run: cmake --build .

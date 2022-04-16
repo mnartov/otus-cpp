@@ -14,7 +14,7 @@ jobs:
       - name: Set variables
         id: variables
         run: |
-          branch_cut_name=$(echo ${{ github.ref_name }} | sed 's/.*//')
+          branch_cut_name=$(echo ${{ github.ref_name }} | rev | cut -d '/' -f 1 | rev)
           echo "Project name will be set by cut name of current branch $branch_cut_name"
       - uses: actions/checkout@v2
         with:

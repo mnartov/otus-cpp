@@ -10,7 +10,7 @@ option(WITH_BOOST_TEST "Whether to build Boost test" ON)
 
 configure_file(version.h.in version.h)
 
-add_executable(${PROJECT_NAME_SET} main.cpp)
+add_executable(${PROJECT_NAME_SET}_cli main.cpp)
 add_library(${PROJECT_NAME_SET} lib.cpp)
 
 set_target_properties(${PROJECT_NAME_SET}_cli ${PROJECT_NAME} PROPERTIES

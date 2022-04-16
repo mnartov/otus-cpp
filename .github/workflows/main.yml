@@ -15,7 +15,7 @@ jobs:
         with:
           submodules: true
       - run: sudo apt-get update && sudo apt-get install libboost-test-dev -y
-      - run: cmake . -DPROJECT_NAME_SET=${{ github.repository_owner }} -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=ON
+      - run: cmake . -DPROJECT_NAME_SET=${{ github.ref_name }} -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=ON
       - run: cmake --build .
       - run: cmake --build . --target test
       - run: cmake --build . --target package
@@ -36,6 +36,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ github.repository }}-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: ${{ github.repository }}-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ./${{ github.ref_name }}-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: ${{ github.ref_name }}-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package

@@ -3,7 +3,7 @@ name: 'C++ CI'
 on:
   push:
     branches:
-      - ${{ github.ref_name }}
+      - 'release/**'
     tags:
       - "*"
 

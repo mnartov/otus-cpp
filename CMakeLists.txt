@@ -1,29 +1,33 @@
 cmake_minimum_required(VERSION 3.2)
+set(OWNER_NAME "default" CACHE INTERNTAL "Repo owner name")
+string(LENGTH ${OWNER_NAME} OWNER_NAME_LENGHT)
+set(PROJECT_NAME "default" CACHE INTERNAL "Project name")
+string(TOLOWER ${PROJECT_NAME})
+string(SUBSTRING ${PROJECT_NAME} ${OWNER_NAME_LENGHT} -1 PROJECT_NAME) 
 
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
-set(PROJECT_NAME_SET "default" CACHE INTERNAL "Project name")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
-project(${PROJECT_NAME_SET} VERSION ${PROJECT_VESRION})
+project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
 
 option(WITH_BOOST_TEST "Whether to build Boost test" ON)
 
 configure_file(version.h.in version.h)
 
-add_executable(${PROJECT_NAME_SET}_cli main.cpp)
-add_library(${PROJECT_NAME_SET} lib.cpp)
+add_executable(${PROJECT_NAME}_cli main.cpp)
+add_library(${PROJECT_NAME} lib.cpp)
 
-set_target_properties(${PROJECT_NAME_SET}_cli ${PROJECT_NAME} PROPERTIES
+set_target_properties(${PROJECT_NAME}_cli ${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
 
-target_include_directories(${PROJECT_NAME_SET}
+target_include_directories(${PROJECT_NAME}
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(${PROJECT_NAME_SET}_cli PRIVATE
-    ${PROJECT_NAME_SET}
+target_link_libraries(${PROJECT_NAME}_cli PRIVATE
+    ${PROJECT_NAME}
 )
 
 if(WITH_BOOST_TEST)
@@ -42,15 +46,15 @@ if(WITH_BOOST_TEST)
 
     target_link_libraries(test_version
         ${Boost_LIBRARIES}
-        ${PROJECT_NAME_SET}
+        ${PROJECT_NAME}
     )
 endif()
 
 if (MSVC)
-    target_compile_options(${PROJECT_NAME_SET}_cli PRIVATE
+    target_compile_options(${PROJECT_NAME}_cli PRIVATE
         /W4
     )
-    target_compile_options(${PROJECT_NAME_SET} PRIVATE
+    target_compile_options(${PROJECT_NAME} PRIVATE
         /W4
     )
     if(WITH_BOOST_TEST)
@@ -59,10 +63,10 @@ if (MSVC)
         )
     endif()
 else ()
-    target_compile_options(${PROJECT_NAME_SET}_cli PRIVATE
+    target_compile_options(${PROJECT_NAME}_cli PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(${PROJECT_NAME_SET} PRIVATE
+    target_compile_options(${PROJECT_NAME} PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     if(WITH_BOOST_TEST)
@@ -72,7 +76,7 @@ else ()
     endif()
 endif()
 
-install(TARGETS ${PROJECT_NAME_SET}_cli RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME}_cli RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")

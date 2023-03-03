@@ -22,7 +22,7 @@ jobs:
           submodules: true
       - run: sudo apt-get update
       - run: cmake . -DPROJECT_NAME=${{ steps.variables.outputs.branch_cut_name }} -DPATCH_VERSION=${{ github.run_number }} -DGTEST=ON
-      - run: cmake --build .
+      - run: cmake --build . --target all
       - run: cmake --build . --target test
       - run: cmake --build . --target package
       - name: Create Release

@@ -8,13 +8,13 @@ set(binFolder, "${CMAKE_SOURCE_DIR}/bin")
 set(testFolder, "${CMAKE_SOURCE_DIR}/test")
 
 project(${PROJECT_NAME} VERSION ${PROJECT_VESRION})
-option(GTEST_ON "Unit test via GTest" ON)
+option(GTEST "Unit test via GTest" ON)
 
 configure_file(version.h.in version.h)
 
 add_subdirectory(src)
 
-if (GTEST_ON) 
+if (GTEST) 
     add_subdirectory(googletest)
     enable_testing()
     add_subdirectory(ut) 
